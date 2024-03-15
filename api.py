@@ -81,6 +81,8 @@ def api_coconala_scrape(api_data: RequestDataScrape):
 
         search_keyword_list = api_data.search_keyword_list
         coconala_scraper = Scraper()
+        log_txt.add_log_txt("Scraper() : ")
+        log_txt.add_log_txt()
         many_data_list = coconala_scraper.scraping_coconala(search_keyword_list)
 
         log_txt.add_log_txt("many_data_list : ")
