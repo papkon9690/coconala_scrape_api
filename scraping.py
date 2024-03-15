@@ -46,7 +46,7 @@ class Scraper:
             data_list = [] #ここにd_listを置かないとデータが蓄積されない。19段に置くと常に更新されて、csvに一つのデータしか入らない。
 
             soup = BeautifulSoup(html, 'lxml')
-            # print(soup)
+            print(soup)
                 
             indi_tags = soup.select('div.c-searchItem') #各詳細ページの項目タグになる。
             # print(indi_tags)
@@ -55,6 +55,9 @@ class Scraper:
                     "titles" , "urls" ,
                 ])
             for i, ind in enumerate (indi_tags):
+                print(f"loop 回数 : ")
+                print(i)
+                print()
                 # areas = ind.select_one('h3.job-lst-main-ttl-txt').text
                 titles = ind.select_one('div.c-itemInfo_title > a').text
                 urls = ind.select_one('div.c-itemInfo_title > a').get('href')
@@ -87,6 +90,9 @@ class Scraper:
             many_data_list.append(data_list)
         
         self.driver.quit()
+        print(f"many_data_list : ")
+        print(many_data_list)
+        print()
         return many_data_list
 
 
