@@ -13,6 +13,26 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 
+# パスの定義
+static_path = "static/"
+log_txt_path = static_path + "log/log.txt"
+
+
+class logText:
+    def __init__(self , log_txt_path) -> None:
+        self.log_txt_path = log_txt_path
+        # logの保存ファイルを空にする
+        with open(self.log_txt_path, 'w') as file:
+            file.write('')
+
+    def add_log_txt(self , add_log_text):
+        """ logを付け加える関数 """
+        with open(self.log_txt_path, 'a') as file:
+            file.write("\n" + add_log_text)
+log_txt = logText(log_txt_path)
+
+
+
 
 class Scraper:
     def __init__(self , browse_visually = "no"):
@@ -38,15 +58,23 @@ class Scraper:
     def scraping_coconala(self , search_keyword_list):
         many_data_list = []
         for loop , search_keyword in enumerate(search_keyword_list):
+            log_txt.add_log_txt("def scraping_coconala 開始 : ")
+            log_txt.add_log_txt(many_data_list)
+            log_txt.add_log_txt()
+
             url = f"https://coconala.com/requests?keyword={search_keyword}&recruiting=true&page=1"
             self.driver.get(url)
             time.sleep(2)
+
+            log_txt.add_log_txt("many_data_list : ")
+            log_txt.add_log_txt(many_data_list)
+            log_txt.add_log_txt()
 
             html = self.driver.page_source
             data_list = [] #ここにd_listを置かないとデータが蓄積されない。19段に置くと常に更新されて、csvに一つのデータしか入らない。
 
             soup = BeautifulSoup(html, 'lxml')
-            print(soup)
+            # print(soup)
                 
             indi_tags = soup.select('div.c-searchItem') #各詳細ページの項目タグになる。
             # print(indi_tags)
@@ -55,9 +83,6 @@ class Scraper:
                     "titles" , "urls" ,
                 ])
             for i, ind in enumerate (indi_tags):
-                print(f"loop 回数 : ")
-                print(i)
-                print()
                 # areas = ind.select_one('h3.job-lst-main-ttl-txt').text
                 titles = ind.select_one('div.c-itemInfo_title > a').text
                 urls = ind.select_one('div.c-itemInfo_title > a').get('href')
@@ -90,9 +115,6 @@ class Scraper:
             many_data_list.append(data_list)
         
         self.driver.quit()
-        print(f"many_data_list : ")
-        print(many_data_list)
-        print()
         return many_data_list
 
 
