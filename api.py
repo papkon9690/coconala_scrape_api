@@ -9,9 +9,24 @@ from line_api import LINENotifyBot
 # パスの定義
 static_path = "static/"
 output_excel_path = static_path + "excel/output.xlsx"
+log_txt_path = static_path + "log/log.txt"
 
 # 環境変数の取得
 access_token = os.environ.get('ACCESS_TOKEN')
+
+class logText:
+    def __init__(self , log_txt_path) -> None:
+        self.log_txt_path = log_txt_path
+        # logの保存ファイルを空にする
+        with open(self.log_txt_path, 'w') as file:
+            file.write('')
+
+    def add_log_txt(self , add_log_text):
+        """ logを付け加える関数 """
+        with open(self.log_txt_path, 'a') as file:
+            file.write("\n" + add_log_text)
+log_txt = logText(log_txt_path)
+
 
 class RequestDataScrape(BaseModel):
     """ apiに渡されるデータの定義 """
@@ -28,10 +43,6 @@ def api_coconala_scrape(api_data: RequestDataScrape):
     many_data_list = coconala_scraper.scraping_coconala(search_keyword_list)
 
     # LINEで通知
-    print(f"line bot の開始 : ")
-    print(many_data_list)
-    print()
-    
     line_bot = LINENotifyBot(access_token)
     t_delta = datetime.timedelta(hours=9)
     JST = datetime.timezone(t_delta, 'JST')
