@@ -40,7 +40,7 @@ class Scraper:
         for loop , search_keyword in enumerate(search_keyword_list):
             url = f"https://coconala.com/requests?keyword={search_keyword}&recruiting=true&page=1"
             self.driver.get(url)
-            time.sleep(1)
+            time.sleep(2)
 
             html = self.driver.page_source
             data_list = [] #ここにd_listを置かないとデータが蓄積されない。19段に置くと常に更新されて、csvに一つのデータしか入らない。
