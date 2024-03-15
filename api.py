@@ -28,6 +28,10 @@ def api_coconala_scrape(api_data: RequestDataScrape):
     many_data_list = coconala_scraper.scraping_coconala(search_keyword_list)
 
     # LINEで通知
+    print(f"line bot の開始 : ")
+    print(many_data_list)
+    print()
+    
     line_bot = LINENotifyBot(access_token)
     t_delta = datetime.timedelta(hours=9)
     JST = datetime.timezone(t_delta, 'JST')
